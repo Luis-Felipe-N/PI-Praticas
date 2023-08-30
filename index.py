@@ -11,11 +11,9 @@ class Reducao():
 
       # Criando a matrix da nova imagem
       nova_imagem = np.zeros((nova_altura, nova_largura, imagem.shape[2]), dtype=np.uint8)
-      
+
       for y in range(nova_altura):
-          # print('[Y INDEX]', y)
-          for x in range(nova_largura):
-            # print('[X INDEX]', x)              
+          for x in range(nova_largura):       
             nova_imagem[y, x] = imagem[y * 2 , x * 2]
               
       return nova_imagem
@@ -37,8 +35,12 @@ class Reducao():
             pixel_03 = imagem[y * 2 + 1, x * 2]
             pixel_04 = imagem[y * 2 + 1, x * 2 + 1]
 
-            pixel = (pixel_01[2] + pixel_02[2] + pixel_03[2] + pixel_04[2]) / 4
-            nova_imagem[y, x] = round(pixel)
+            pixel = []
+            for p in range(imagem.shape[2]):
+              print((pixel_01[p] + pixel_02[p] + pixel_03[p] + pixel_04[p]) / 4)
+              pixel.append(round((pixel_01[p] + pixel_02[p] + pixel_03[p] + pixel_04[p]) / 4))
+            print(pixel)
+            nova_imagem[y, x] = pixel
               
       return nova_imagem 
 
@@ -67,7 +69,7 @@ matrix_imagem = np.array(arquivo_imagem)
 reducao = Reducao()
 ampliar = Ampliacao()
 
-resultado_interpolacao = reducao.vizinho_mais_proximo(matrix_imagem)
+resultado_interpolacao = reducao.bilinear(matrix_imagem)
 resultado_imagem = Image.fromarray(resultado_interpolacao)
 
 # # Salve as imagens resultantes
