@@ -3,7 +3,6 @@ from PIL import Image
 
 
 class Reducao():
-    
     def vizinho_mais_proximo(self, imagem):
       # Pegando altura atual
       altura, largura = imagem.shape[:2]
@@ -11,7 +10,7 @@ class Reducao():
 
       # Criando a matrix da nova imagem
       nova_imagem = np.zeros((nova_altura, nova_largura, imagem.shape[2]), dtype=np.uint8)
-      
+      print(imagem.shape) #ver na documentação a funão shape
       for y in range(nova_altura):
           # print('[Y INDEX]', y)
           for x in range(nova_largura):
@@ -59,6 +58,10 @@ class Ampliacao():
               nova_imagem[y + 1, x + 1] = pixel
               
       return nova_imagem
+    
+    def bilinear(self, imagem):
+      pass
+
 
 # Transformando a imageme em uma matrix
 arquivo_imagem = Image.open('imagens/img-02.jpg')
@@ -67,8 +70,26 @@ matrix_imagem = np.array(arquivo_imagem)
 reducao = Reducao()
 ampliar = Ampliacao()
 
-resultado_interpolacao = reducao.vizinho_mais_proximo(matrix_imagem)
-resultado_imagem = Image.fromarray(resultado_interpolacao)
+#Para redução por vizinhos mais proximo.
 
-# # Salve as imagens resultantes
-resultado_imagem.save('resultado.jpg')
+resultado = reducao.vizinho_mais_proximo(matrix_imagem)
+resultado_imagem = Image.fromarray(resultado)
+resultado_imagem.save('resultado_reducao_vizinhos.jpg')
+
+#Para redução por vizinhos mais proximo.
+
+resultado = reducao.bilinear(matrix_imagem)
+resultado_imagem = Image.fromarray(resultado)
+resultado_imagem.save('resultado_reducao_bilinear.jpg')
+
+#Para ampliação por vizinhos mais proximo.
+
+resultado = ampliar.vizinho_mais_proximo(matrix_imagem)
+resultado_imagem = Image.fromarray(resultado)
+resultado_imagem.save('resultado_ampliacao_vizinhos.jpg')
+
+#Para ampliaçao por bilinear.
+
+resultado = ampliar.bilinear(matrix_imagem)
+resultado_imagem = Image.fromarray(resultado)
+resultado_imagem.save('resultado_ampliacao_bilinear.jpg')
