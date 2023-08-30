@@ -32,14 +32,18 @@ class Reducao():
                 #calculam as coordenadas correspondentes na imagem original para cada pixel da nova imagem
                 src_x = x * (largura / nova_largura)
                 src_y = y * (altura / nova_altura)
+                #calculam as coordenadas dos quatro pixels da imagem original que serão usadas para calcular o valor do novo pixel
                 x1, y1 = int(np.floor(src_x)), int(np.floor(src_y))
                 x2, y2 = min(x1 + 1, largura - 1), min(y1 + 1, altura - 1)
+                #calculam as distâncias entre a posição mapeada e os pixels originais
                 dx = src_x - x1
                 dy = src_y - y1
+                #recuperam os valores de pixel nas quatro posições calculadas anteriormente
                 pixel1 = imagem[y1, x1]
                 pixel2 = imagem[y1, x2]
                 pixel3 = imagem[y2, x1]
                 pixel4 = imagem[y2, x2]
+                #calcula o novo valor do pixel tomando uma média ponderada dos quatro pixels da imagem original. Os pesos são determinados pelas distâncias (dx e dy) calculadas anteriormente
                 nova_imagem[y, x] = (1 - dx) * (1 - dy) * pixel1 + dx * (1 - dy) * pixel2 + (1 - dx) * dy * pixel3 + dx * dy * pixel4
         return nova_imagem
 
